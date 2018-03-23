@@ -1,0 +1,1837 @@
+<!-- @(#) $Id: ./etc/rules/msauth_rules.xml, 2011/09/08 dcid Exp $
+
+  -  Created by J.Zoldners 23.03.2018.
+  -  Any questions or comments - janis.zoldners # gmail
+  -  
+  -  HIDS: OSSEC 2.8.3
+  -  OS: Windows 7,8,10, Server 2008,2012,2016
+  -
+  -  Windows 8 and Windows Server 2012 Security Event Details
+  -  https://www.microsoft.com/en-us/download/details.aspx?id=35753
+  -
+  -  Windows security audit events 
+  -  https://www.microsoft.com/en-us/download/details.aspx?id=50034
+  -  
+  -  Advanced security audit policy settings
+  -  https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/advanced-security-audit-policy-settings
+  -
+  -  Copyright (C) 2009 Trend Micro Inc.
+  -  All rights reserved.
+  -
+  -  This program is a free software; you can redistribute it
+  -  and/or modify it under the terms of the GNU General Public
+  -  License (version 2) as published by the FSF - Free Software
+  -  Foundation.
+  -
+  -  License details: http://www.ossec.net/en/licensing.html
+  -->
+
+
+<var name="MS_FREQ">20</var>      
+
+<group name="windows,">
+  <rule id="18100" level="0">
+    <category>windows</category>
+    <description>Group of windows rules</description>
+  </rule>
+
+  <rule id="18101" level="0">
+    <if_sid>18100</if_sid>
+    <status>^INFORMATION</status>
+    <description>Windows informational event</description>
+  </rule>
+  
+  <rule id="18102" level="0">
+    <if_sid>18100</if_sid>
+    <status>^WARNING</status>
+    <description>Windows warning event</description>
+  </rule>
+  
+  <rule id="18103" level="0">
+    <if_sid>18100</if_sid>
+    <status>^ERROR</status>
+    <description>Windows error event</description>
+    <group>system_error,</group>
+  </rule>
+
+  <rule id="18104" level="0">
+    <if_sid>18100</if_sid>
+    <status>^AUDIT_SUCCESS|^success</status>
+    <description>Windows audit success event</description>
+  </rule>
+  
+  <rule id="18105" level="0">
+    <if_sid>18100</if_sid>
+    <status>^AUDIT_FAILURE|^failure</status>
+    <description>Windows audit failure event</description>
+  </rule>
+
+<!-- # GROUPS -->
+
+  <rule id="18106" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4764$</id>
+    <description>A group type was changed</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+<!-- # LOCAL GROUPS -->
+
+  <rule id="18107" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4731$</id>
+    <description>A security-enabled local group was created</description>
+    <group>group_created,win_group_created,</group>
+  </rule>
+  
+  <rule id="18108" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4732$</id>
+    <description>A member was added to a security-enabled local group</description>
+   <group>group_changed,win_group_changed,</group>
+  </rule>
+  
+  <rule id="18109" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4733$</id>
+    <description>A member was removed from a security-enabled local group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18110" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4735$</id>
+    <description>A security-enabled local group was changed</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+  
+  <rule id="18111" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4734$</id>
+    <description>A security-enabled local group was deleted</description>
+    <group>group_deleted,win_group_deleted,</group>
+  </rule>
+
+  <rule id="18112" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Account Operators</match>
+    <description>Account Operators group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18113" level="12">
+    <if_sid>18108,18109</if_sid>
+    <match>Administrators</match>
+    <description>Administrators group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18114" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Allowed RODC Password Replication Group</match>
+    <description>Allowed RODC Password Replication Group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18115" level="12">
+    <if_sid>18108,18109</if_sid>
+    <match>Backup Operators</match>
+    <description>Backup Operators group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18116" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Cert Publishers</match>
+    <description>Cert Publishers group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18117" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Certificate Service DCOM Access</match>
+    <description>Certificate Service DCOM Access group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18118" level="12">
+    <if_sid>18108,18109</if_sid>
+    <match>Cryptographic Operators</match>
+    <description>Cryptographic Operators group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18119" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Denied RODC Password Replication Group</match>
+    <description>Denied RODC Password Replication Group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18120" level="8">
+    <if_sid>18108,18109</if_sid>
+    <match>Distributed COM Users</match>
+    <description>Distributed COM Users group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18121" level="8">
+    <if_sid>18108,18109</if_sid>
+    <match>DHCP Administrators</match>
+    <description>DHCP Administrators group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18122" level="8">
+    <if_sid>18108,18109</if_sid>
+    <match>DnsAdmins</match>
+    <description>DNS Administrators group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18123" level="12">
+    <if_sid>18108,18109</if_sid>
+    <match>Enterprise Read-only Domain Controllers</match>
+    <description>Enterprise Read-only Domain Controllers group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18124" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Event Log Readers</match>
+    <description>Event Log Readers group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18125" level="12">
+    <if_sid>18108,18109</if_sid>
+    <match>Guests</match>
+    <description>Guests group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18126" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Incoming Forest Trust Builders</match>
+    <description>Incoming Forest Trust Builders group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18127" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Network Configuration Operators</match>
+    <description>Network Configuration Operators group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18128" level="8">
+    <if_sid>18108,18109</if_sid>
+    <match>Performance Log Users</match>
+    <description>Performance Log Users group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18129" level="8">
+    <if_sid>18108,18109</if_sid>
+    <match>Performance Monitor Users</match>
+    <description>Performance Monitor Users group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18130" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Power Users</match>
+    <description>Power Users group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18131" level="8">
+    <if_sid>18108,18109</if_sid>
+    <match>Pre-Windows 2000 Compatible Access</match>
+    <description>Pre-Windows 2000 Compatible Access group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18132" level="8">
+    <if_sid>18108,18109</if_sid>
+    <match>Print Operators</match>
+    <description>Print Operators group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18133" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>RAS and IAS Servers</match>
+    <description>RAS and IAS Servers group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18134" level="12">
+    <if_sid>18108,18109</if_sid>
+    <match>Read-only Domain Controllers</match>
+    <description>Read-only Domain Controllers group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18135" level="12">
+    <if_sid>18108,18109</if_sid>
+    <match>Remote Desktop Users</match>
+    <description>Remote Desktop Users group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18136" level="12">
+    <if_sid>18108,18109</if_sid>
+    <match>Remote Management Users</match>
+    <description>Remote Management Users group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18137" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Replicator</match>
+    <description>Replicator group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18138" level="10">
+    <if_sid>18108,18109</if_sid>
+    <match>Server Operators</match>
+    <description>Server Operators group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18139" level="8">
+    <if_sid>18108,18109</if_sid>
+    <match>Terminal Server License Servers</match>
+    <description>Terminal Server License Servers group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18140" level="12">
+    <if_sid>18108,18109</if_sid>
+    <regex>Security ID:\s+S-1-5-32-545</regex>
+    <description>Users group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+  <rule id="18141" level="8">
+    <if_sid>18108,18109</if_sid>
+    <match>Windows Authorization Access Group</match>
+    <description>Windows Authorization Access Group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled local group</info>
+    <info>Related: A member was removed from a security-enabled local group</info>
+  </rule>
+
+<!-- # GLOBAL GROUPS -->
+
+  <rule id="18142" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4727$</id>
+    <description>A security-enabled global group was created</description>
+    <group>group_created,win_group_created,</group>
+  </rule>
+  
+  <rule id="18143" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4728$</id>
+    <description>A member was added to a security-enabled global group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+  
+  <rule id="18144" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4729$</id>
+    <description>A member was removed from a security-enabled global group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18145" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4737$</id>
+    <description>A security-enabled global group was changed</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18146" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4730$</id>
+    <description>A security-enabled global group was deleted</description>
+    <group>group_deleted,win_group_deleted,</group>
+  </rule>
+
+  <rule id="18147" level="12">
+    <if_sid>18143,18144</if_sid>
+    <match>Domain Admins</match>
+    <description>Domain Admins group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled global group</info>
+    <info>Related: A member was removed from a security-enabled global group</info>
+  </rule>
+
+  <rule id="18148" level="5">
+    <if_sid>18143,18144</if_sid>
+    <regex>Security ID:\s+S-1-5-21\S+-515</regex>
+    <description>Domain Computers group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled global group</info>
+    <info>Related: A member was removed from a security-enabled global group</info>
+  </rule>
+
+  <rule id="18149" level="12">
+    <if_sid>18143,18144</if_sid>
+    <match>Domain Controllers</match>
+    <description>Domain Controllers group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled global group</info>
+    <info>Related: A member was removed from a security-enabled global group</info>
+  </rule>
+
+  <rule id="18150" level="12">
+    <if_sid>18143,18144</if_sid>
+    <match>Domain Guests</match>
+    <description>Domain Guests group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled global group</info>
+    <info>Related: A member was removed from a security-enabled global group</info>
+  </rule>
+
+  <rule id="18151" level="5">
+    <if_sid>18143,18144</if_sid>
+    <regex>Security ID:\s+S-1-5-21\S+-513</regex>
+    <description>Domain Users group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled global group</info>
+    <info>Related: A member was removed from a security-enabled global group</info>
+  </rule>
+
+  <rule id="18152" level="12">
+    <if_sid>18143,18144</if_sid>
+    <match>Enterprise Admins</match>
+    <description>Enterprise Admins group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled global group</info>
+    <info>Related: A member was removed from a security-enabled global group</info>
+  </rule>
+
+  <rule id="18153" level="10">
+    <if_sid>18143,18144</if_sid>
+    <match>Group Policy Creator Owners</match>
+    <description>Group Policy Creator Owners group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled global group</info>
+    <info>Related: A member was removed from a security-enabled global group</info>
+  </rule>
+
+  <rule id="18154" level="12">
+    <if_sid>18143,18144</if_sid>
+    <match>Schema Admins</match>
+    <description>Schema Admins group changed</description>
+    <group>group_changed,win_group_changed,</group>
+    <info>Related: A member was added to a security-enabled global group</info>
+    <info>Related: A member was removed from a security-enabled global group</info>
+  </rule>
+
+<!-- # UNIVERSAL GROUPS -->
+  
+  <rule id="18155" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4754$</id>
+    <description>A security-enabled universal group was created</description>
+    <group>group_created,win_group_created,</group>
+  </rule>
+  
+  <rule id="18156" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4755$</id>
+    <description>A security-enabled universal group was changed</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+  
+  <rule id="18157" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4756$</id>
+    <description>A member was added to a security-enabled universal group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+  
+  <rule id="18158" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4757$</id>
+    <description>A member was removed from a security-enabled universal group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+  
+  <rule id="18159" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4758$</id>
+    <description>A security-enabled universal group was deleted</description>
+    <group>group_deleted,win_group_deleted,</group>
+  </rule>
+
+<!-- # DISTRIBUTION GROUPS -->
+
+  <rule id="18160" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4744$</id>
+    <description>A security-disabled local group was created</description>
+    <group>group_created,win_group_created,</group>
+  </rule>
+
+  <rule id="18161" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4745$</id>
+    <description>A security-disabled local group was changed</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18162" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4746$</id>
+    <description>A member was added to a security-disabled local group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18163" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4747$</id>
+    <description>A member was removed from a security-disabled local group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18164" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4748$</id>
+    <description>A security-disabled local group was deleted</description>
+    <group>group_deleted,win_group_deleted,</group>
+  </rule>
+
+  <rule id="18165" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4749$</id>
+    <description>A security-disabled global group was created</description>
+    <group>group_created,win_group_created,</group>
+  </rule>
+
+  <rule id="18166" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4750$</id>
+    <description>A security-disabled global group was changed</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18167" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4751$</id>
+    <description>A member was added to a security-disabled global group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18168" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4752$</id>
+    <description>A member was removed from a security-disabled global group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18169" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4753$</id>
+    <description>A security-disabled global group was deleted</description>
+    <group>group_deleted,win_group_deleted,</group>
+  </rule>
+
+  <rule id="18170" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4759$</id>
+    <description>A security-disabled universal group was created</description>
+    <group>group_created,win_group_created,</group>
+  </rule>
+
+  <rule id="18171" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4760$</id>
+    <description>A security-disabled universal group was changed</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18172" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4761$</id>
+    <description>A member was added to a security-disabled universal group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18173" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4762$</id>
+    <description>A member was removed from a security-disabled universal group</description>
+    <group>group_changed,win_group_changed,</group>
+  </rule>
+
+  <rule id="18174" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4763$</id>
+    <description>A security-disabled universal group was deleted</description>
+    <group>group_deleted,win_group_deleted,</group>
+  </rule>
+
+<!-- # USERS -->
+
+  <rule id="18175" level="7">
+    <if_sid>18104</if_sid>
+    <id>^4720$</id>
+    <description>A user account was created</description>
+    <group>adduser,account_changed,</group>
+  </rule>
+
+  <rule id="18176" level="7">
+    <if_sid>18104</if_sid>
+    <id>^4722$</id>
+    <description>User account enabled</description>
+    <group>adduser,account_changed,</group>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18177" level="0">
+    <if_sid>18104</if_sid>
+    <id>^4724$</id>
+    <description>Ignore computer accounts</description>
+  </rule>
+
+  <rule id="18178" level="9">
+    <if_sid>18104</if_sid>
+    <id>^4724$</id>
+    <description>An attempt was made to reset an account's password</description>
+    <group>account_changed,</group>
+  </rule>
+
+  <rule id="18179" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4725$</id>
+    <description>A user account was disabled</description>
+    <group>account_changed,</group>
+  </rule>
+
+  <rule id="18180" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4726$</id>
+    <description>A user account was deleted</description>
+    <group>account_changed,</group>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18181" level="0">
+    <if_sid>18104</if_sid>
+    <id>^4735$</id>
+    <regex>Account Name:\s+\w+\$</regex>
+    <description>Ignore computer accounts</description>
+  </rule>
+  
+  <rule id="18182" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4738$</id>
+    <description>A user account was changed</description>
+    <group>account_changed,</group>
+  </rule>
+
+  <rule id="18183" level="9">
+    <if_sid>18104</if_sid>
+    <id>^4740$</id>
+    <description>A user account was locked out</description>
+    <group>authentication_failures,</group>  
+  </rule>
+
+  <rule id="18184" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4767$</id>
+    <description>A user account was unlocked</description>
+    <group>account_changed,</group>
+  </rule>
+
+  <rule id="18185" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4781$</id>
+    <description>The name of an account was changed</description>
+    <group>account_changed,</group>
+  </rule>
+
+<!-- Configure:
+Active Directory - Group Policy: 
+Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advanced Audit Policy Configuration \ Policy Change: Audit Authorization Policy Change (Success)
+-->
+
+  <rule id="18186" level="9">
+    <if_sid>18104</if_sid>
+    <id>^4704$</id>
+    <description>A user right was assigned</description>
+  </rule>
+
+  <rule id="18187" level="9">
+    <if_sid>18104</if_sid>
+    <id>^4705$</id>
+    <description>A user right was removed</description>
+  </rule>
+
+<!-- # USER LOGINS -->
+
+<!-- Customize -->
+  <rule id="18188" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4624$</id>
+    <match>username1|username2</match>
+    <description>Login successful: VIP</description>
+    <group>authentication_success,</group>
+  </rule>
+
+<!-- Customize -->
+  <rule id="18189" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4624$</id>
+    <match>username1|username2</match>
+    <description>Login successful: IT administrators</description>
+    <group>authentication_success,</group>
+  </rule>
+
+  <rule id="18190" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4624$</id>
+    <match>Logon Type:   2</match>
+    <description>Login successful: console</description>
+    <group>authentication_success,</group>
+  </rule>
+
+  <rule id="18191" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4624$</id>
+    <match>Logon Type:   3</match>
+    <description>Login successful: network</description>
+    <group>authentication_success,</group>
+    <info>Related: local_rules.xml 100001,100002</info>
+  </rule>
+
+  <rule id="18192" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4624$</id>
+    <match>Logon Type:   10</match>
+    <description>Login successful: Remote Desktop</description>
+    <group>authentication_success,</group>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18193" level="0">
+    <if_sid>18104</if_sid>
+    <id>^4624$|^4769$</id>
+    <regex>Account Name:\s+SM_\S+</regex>
+    <description>Ignore Exchange monitoring mailbox</description>
+  </rule>
+
+<!-- Customize -->
+  <rule id="18194" level="0">
+    <if_sid>18104</if_sid>
+    <id>^4624$|^4769$</id>
+    <regex>Account Name:\s+username1</regex>
+    <description>Ignore user</description>
+  </rule>
+  
+  <rule id="18195" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4624$|^4769$</id>
+    <description>Login successful</description>
+    <group>authentication_success,</group>
+  </rule>
+
+  <rule id="18196" level="5">
+    <if_sid>18105</if_sid>
+    <id>^4625$</id>
+    <description>Login failed</description>
+    <group>win_authentication_failed,</group>
+  </rule>
+
+<!-- Customize -->
+  <rule id="18197" level="7">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>username1|username2</match>
+    <description>Login failed: VIP</description>
+    <info>Related: Login failed</info>
+    <group>win_authentication_failed,</group>
+  </rule>
+
+<!-- Customize -->
+  <rule id="18198" level="7">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>username1|username2</match>
+    <description>Login failed: IT administrators</description>
+    <info>Related: Login failed</info>
+    <group>win_authentication_failed,</group>
+  </rule>
+
+  <rule id="18199" level="5">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>0xC000006A</match>
+    <description>Login failed: wrong password</description>
+    <info>Related: Login failed</info>
+    <group>win_authentication_failed,</group>
+  </rule>
+
+  <rule id="18200" level="5">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>0xC0000072</match>
+    <description>Login failed: account disabled</description>
+    <group>win_authentication_failed,login_denied,</group>
+    <info>Related: Login failed</info>
+  </rule>
+
+  <rule id="18201" level="5">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>0xC0000064</match>
+    <description>Login failed: no such user</description>
+    <group>win_authentication_failed,login_denied,</group>
+    <info>Related: Login failed</info>
+  </rule>
+
+  <rule id="18202" level="5">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>0xC0000193</match>
+    <description>Login failed: account expired</description>
+    <group>win_authentication_failed,login_denied,</group>
+    <info>Related: Login failed</info>
+  </rule>
+
+  <rule id="18203" level="7">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>0xC0000070</match>
+    <description>Login failed: invalid workstation</description>
+    <group>win_authentication_failed,login_denied,</group>
+    <info>Related: Login failed</info>
+  </rule>
+
+  <rule id="18204" level="5">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>0xC0000224</match>
+    <description>Login failed: user must change password</description>
+    <group>win_authentication_failed,</group>
+    <info>Related: Login failed</info>
+  </rule>
+  
+  <rule id="18205" level="5">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>0xC0000071</match>
+    <description>Login failed: password expired</description>
+    <group>win_authentication_failed,</group>
+    <info>Related: Login failed</info>
+  </rule>
+
+  <rule id="18206" level="5">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>0xC0000234</match>
+    <description>Login failed: account locked out</description>
+    <group>win_authentication_failed,</group>
+    <info>Related: Login failed</info>
+  </rule>
+
+  <rule id="18207" level="5">
+    <if_sid>18165</if_sid>
+    <id>^4625$</id>
+    <match>0xc000015b</match>
+    <description>Login failed: not granted the requested logon type</description>
+    <group>win_authentication_failed,login_denied,</group>
+    <info>Related: Login failed</info>
+  </rule>
+
+  <rule id="18208" level="3">
+    <if_sid>18105</if_sid>
+    <id>^4771$</id>
+    <match>0x18</match>
+    <description>Login failed: KDC_ERR_PREAUTH_FAILED</description>
+    <group>win_authentication_failed,</group>
+  </rule>
+
+  <rule id="18209" level="3">
+    <if_sid>18105</if_sid>
+    <id>^4771$</id>
+    <match>0x12</match>
+    <description>Login failed: KDC_ERR_CLIENT_REVOKED</description>
+    <group>win_authentication_failed,</group>
+  </rule>
+
+  <rule id="18210" level="3">
+    <if_sid>18105</if_sid>
+    <id>^4771$</id>
+    <match>0x17</match>
+    <description>Login failed: KDC_ERR_KEY_EXPIRED</description>
+    <group>win_authentication_failed,</group>
+  </rule>
+
+  <rule id="18211" level="3">
+    <if_sid>18105</if_sid>
+    <id>^4771$</id>
+    <match>0x6</match>
+    <description>Login failed: KDC_ERR_C_PRINCIPAL_UNKNOWN</description>
+    <group>win_authentication_failed,</group>
+  </rule>
+
+<!-- # COMPUTERS -->
+
+  <rule id="18212" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4741$</id>
+    <description>A computer account was created</description>
+    <group>account_changed,</group>
+  </rule>
+
+  <rule id="18213" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4742$</id>
+    <description>A computer account was changed</description>
+    <group>account_changed,</group>
+  </rule>
+
+  <rule id="18214" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4743$</id>
+    <description>A computer account was deleted</description>
+    <group>account_changed,</group>
+  </rule>
+
+<!-- Configure:
+Active Directory - Group Policy: 
+Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advanced Audit Policy Configuration \ Logon/Logoff: Audit Other Logon/Logoff Events (Success)
+-->
+
+  <rule id="18215" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4778$</id>
+    <description>A session was reconnected</description>
+  </rule>
+
+  <rule id="18216" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4779$</id>
+    <description>A session was disconnected</description>
+  </rule>
+
+  <rule id="18217" level="2">
+    <if_sid>18104</if_sid>
+    <id>^4800$</id>
+    <description>The workstation was locked</description>
+  </rule>
+
+  <rule id="18218" level="2">
+    <if_sid>18104</if_sid>
+    <id>^4801$</id>
+    <description>The workstation was unlocked</description>
+  </rule>
+
+  <rule id="18219" level="2">
+    <if_sid>18104</if_sid>
+    <id>^4802$</id>
+    <description>The screen saver was invoked</description>
+  </rule>
+
+  <rule id="18220" level="2">
+    <if_sid>18104</if_sid>
+    <id>^4803$</id>
+    <description>The screen saver was dismissed</description>
+  </rule>
+
+  <rule id="18221" level="7">
+    <if_sid>18104</if_sid>
+    <id>^4719$</id>
+    <description>System audit policy was changed</description>
+    <group>policy_changed,</group>
+  </rule>
+
+  <rule id="18222" level="3">
+    <if_sid>18104</if_sid>
+    <id>^1102$</id>
+    <description>The audit log was cleared</description>
+    <group>logs_cleared,</group>
+  </rule>
+
+  <rule id="18223" level="3">
+    <if_sid>18104</if_sid>
+    <id>^4616$</id>
+    <description>The system time was changed</description>
+    <group>time_changed,</group>
+  </rule>
+
+<!-- Configure:
+Active Directory - Group Policy: 
+Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advanced Audit Policy Configuration \ Object Access: Audit Other Object Access Events (Success)
+-->
+
+  <rule id="18224" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4698$</id>
+    <description>A scheduled task was created</description>
+  </rule>
+
+  <rule id="18225" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4699$</id>
+    <description>A scheduled task was deleted</description>
+  </rule>
+
+<!-- Configure:
+Active Directory - Group Policy: 
+Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advanced Audit Policy Configuration \ System: Audit Security System Extension (Success)
+-->
+
+<!-- Exception -->
+  <rule id="18226" level="0">
+    <if_sid>18101</if_sid>
+    <id>^7040$</id>
+    <match>Windows Modules Installer|Background Intelligent Transfer</match>
+    <description>Ignore services</description>
+  </rule>
+
+  <rule id="18227" level="3">
+    <if_sid>18101</if_sid>
+    <id>^7040$</id>
+    <group>policy_changed,</group>
+    <description>The start type of the service was changed</description>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18228" level="0">
+    <if_sid>18101</if_sid>
+    <id>^7045$</id>
+    <match>Adobe Flash Player|Mozilla Maintenance Service|Sysmon64|SysmonDrv</match>
+    <description>Ignore services</description>
+  </rule>
+
+  <rule id="18229" level="9">
+    <if_sid>18101</if_sid>
+    <id>^7045$</id>
+    <group>policy_changed,</group>
+    <description>A service was installed in the system</description>
+  </rule>
+
+  <rule id="18230" level="3">
+    <if_sid>18101</if_sid>
+    <id>^11724$</id>
+    <description>Application uninstalled</description>
+  </rule>
+
+  <rule id="18231" level="5">
+    <if_sid>18101</if_sid>
+    <id>^11707$</id>
+    <description>Application installed</description>
+  </rule>
+
+<!-- Configure:
+Add eventchannel Microsoft-Windows-DriverFrameworks-UserMode/Operational
+-->
+
+<!-- Exception -->
+  <rule id="18232" level="0">
+    <if_sid>18101</if_sid>
+    <id>^1003$</id>
+    <match>USB.VID|ACPI.HPQ6000|ERICSSON.GPS</match>
+    <description>Ignore system device</description>
+  </rule>
+
+  <rule id="18233" level="4">
+    <if_sid>18101</if_sid>
+    <id>^1003$</id>
+    <match>DriverFrameworks-UserMode</match>
+    <description>USB device connected</description>
+  </rule>
+
+<!-- # WINDOWS FIREWALL -->
+
+<!-- Configure:
+Add eventchannel Microsoft-Windows-Windows Firewall With Advanced Security/Firewall
+-->
+
+  <rule id="18234" level="9">
+    <if_sid>18101</if_sid>
+    <id>^2003$</id>
+    <match>Value: No</match>
+    <description>Windows Firewall is turned off</description>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18235" level="0">
+    <if_sid>18101</if_sid>
+    <id>^2003$</id>
+    <match>The UMDF Host Process</match>
+    <description>Ignore</description>
+  </rule>
+
+  <rule id="18236" level="6">
+    <if_sid>18101</if_sid>
+    <id>^2003$</id>
+    <match>Firewall</match>
+    <description>Windows Firewall setting has changed</description>
+  </rule>
+
+<!-- Customize -->
+  <rule id="18237" level="0">
+    <if_sid>18101</if_sid>
+    <id>^2004$</id>
+    <match>your-application</match>
+  </rule>
+
+  <rule id="18238" level="5">
+    <if_sid>18101</if_sid>
+    <id>^2004$</id>
+    <description>Windows Firewall rule was added</description>
+  </rule>
+
+<!-- Customize -->
+  <rule id="18239" level="0">
+    <if_sid>18101</if_sid>
+    <id>^2005$</id>
+    <match>your-application</match>
+  </rule>
+
+  <rule id="18240" level="4">
+    <if_sid>18101</if_sid>
+    <id>^2005$</id>
+    <description>Windows Firewall rule was modified</description>
+  </rule>
+
+<!-- Customize -->
+  <rule id="18241" level="0">
+    <if_sid>18101</if_sid>
+    <id>^2006$</id>
+    <match>your-application</match>
+  </rule>
+
+  <rule id="18242" level="3">
+    <if_sid>18101</if_sid>
+    <id>^2006$</id>
+    <description>Windows Firewall rule was deleted</description>
+  </rule>
+
+  <rule id="18243" level="3">
+    <if_sid>18101</if_sid>
+    <id>^2032$</id>
+    <description>Windows Firewall has been reset to default configuration</description>
+  </rule>
+
+<!-- Configure:
+Active Directory - Group Policy: 
+Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advanced Audit Policy Configuration \ System: Audit Other System Events (Success)
+-->
+
+  <rule id="18244" level="7">
+    <if_sid>18104</if_sid>
+    <id>^5024$</id>
+    <description>The Windows Firewall service started successfully</description>
+  </rule>
+
+  <rule id="18245" level="9">
+    <if_sid>18104</if_sid>
+    <id>^5025$</id>
+    <description>The Windows Firewall service was stopped</description>
+  </rule>
+
+<!-- # SRP/APPLOCKER -->
+
+<!-- Exception -->
+  <rule id="18246" level="0">
+    <if_sid>18102</if_sid>
+    <id>^865$</id>
+    <regex>Mozilla\\updates</regex>
+    <description>Ignore Mozilla Firefox updates</description>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18247" level="0">
+    <if_sid>18102</if_sid>
+    <id>^865$</id>
+    <match>C:\Program Files|C:\Windows|software_reporter_tool</match>
+    <description>Ignore SRP malfunction and Google Chrome</description>
+  </rule>
+
+  <rule id="18248" level="9">
+    <if_sid>18102</if_sid>
+    <id>^865$</id>
+    <description>Restricted: Software Restriction Policy</description>
+  </rule>
+
+  <rule id="18249" level="9">
+    <if_sid>18102</if_sid>
+    <id>^8004$|8006$|8007$</id>
+    <description>Restricted: AppLocker</description>
+  </rule>
+
+<!-- # PROCESSES -->
+
+<!-- Configure:
+Active Directory - Group Policy: 
+Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advanced Audit Policy Configuration \ Detailed Tracking: Audit Process Creation (Success)
+! Duplicate events - Sysmon event ID 1 Process created
+-->
+
+  <rule id="18250" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>at.exe</match>
+    <description>Process: schedule has been launched</description>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18251" level="0">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <regex>Account Name:\s+\w+\$</regex>
+    <description>Ignore AD startup scripts</description>
+  </rule>
+  
+  <rule id="18252" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>cmd.exe</match>
+    <description>Process: CMD has been launched</description>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18253" level="0">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>software_reporter_tool.exe</match>
+    <description>Ignore Google Chrome</description>
+  </rule>
+
+  <rule id="18254" level="9">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>C:\Users</match>
+    <description>Process: created in user profile</description>
+  </rule>
+
+  <rule id="18255" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>mstsc.exe</match>
+    <description>Process: Remote Desktop has been launched</description>
+  </rule>
+  
+  <rule id="18256" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>telnet.exe</match>
+    <description>Process: Telnet has been launched</description>
+  </rule>
+
+  <rule id="18257" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>powershell.exe</match>
+    <description>Process: PowerShell has been launched</description>
+  </rule>
+  
+  <rule id="18258" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>reg.exe|regedit.exe</match>
+    <description>Process: Registry has been launched</description>
+  </rule>
+
+  <rule id="18259" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>C:\Windows\System32\sc.exe</match>
+    <description>Process: Services has been launched</description>
+  </rule> 
+
+  <rule id="18260" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>net.exe</match>
+    <description>Process: NET has been launched</description>
+  </rule> 
+  
+  <rule id="18261" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4688$</id>
+    <match>wmic.exe</match>
+    <description>Process: WMIC has been launched</description>
+  </rule>
+
+<!-- # ACTIVE DIRECTORY MODIFICATIONS -->
+
+<!-- Configure:
+https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-directory-service-changes
+-->
+
+<!-- Customize -->
+  <rule id="18262" level="0">
+    <if_sid>18104</if_sid>
+    <id>^5136$</id>
+    <regex>Account Name:\s+server1\$</regex>
+    <description>Ignore server1 modifications</description>
+  </rule>
+
+  <rule id="18263" level="5">
+    <if_sid>18104</if_sid>
+    <id>^5136$</id>
+    <description>AD: directory service object was modified</description>
+  </rule>
+
+  <rule id="18264" level="5">
+    <if_sid>18104</if_sid>
+    <id>^5137$</id>
+    <description>AD: directory service object was created</description>
+  </rule>
+
+  <rule id="18265" level="5">
+    <if_sid>18104</if_sid>
+    <id>^5141$</id>
+    <description>AD: directory service object was deleted</description>
+  </rule>
+
+<!-- # ACTIVE DIRECTORY CERTIFICATE SERVICES -->
+
+<!-- Configure:
+Active Directory - Group Policy: 
+Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advanced Audit Policy Configuration \ Object Access: Audit Certification Services (Success)
+
+Certificate Authority \ Properties: Auditing
+-->
+
+  <rule id="18266" level="9">
+    <if_sid>18104</if_sid>
+    <id>^4877$</id>
+    <description>CA: Certificate Services backup completed</description>
+  </rule>
+
+  <rule id="18267" level="9">
+    <if_sid>18104</if_sid>
+    <id>^4879$</id>
+    <description>CA: Certificate Services restore completed</description>
+  </rule>
+
+  <rule id="18268" level="9">
+    <if_sid>18104</if_sid>
+    <id>^4882$</id>
+    <description>CA: the security permissions for Certificate Services changed</description>
+  </rule>
+
+  <rule id="18269" level="9">
+    <if_sid>18104</if_sid>
+    <id>^4885$</id>
+    <description>CA: the audit filter for Certificate Services changed</description>
+  </rule>
+
+  <rule id="18270" level="5">
+    <if_sid>18104</if_sid>
+    <id>^4887$</id>
+    <description>CA: Certificate Services issued a certificate</description>
+  </rule>
+
+  <rule id="18271" level="7">
+    <if_sid>18105</if_sid>
+    <id>^4888$</id>
+    <description>CA: Certificate Services denied a certificate request</description>
+  </rule>
+
+  <rule id="18272" level="9">
+    <if_sid>18105</if_sid>
+    <id>^4890$</id>
+    <description>CA: the certificate manager settings for Certificate Services changed</description>
+  </rule>
+
+  <rule id="18273" level="9">
+    <if_sid>18105</if_sid>
+    <id>^4896$</id>
+    <description>CA: one or more rows have been deleted from the certificate database</description>
+  </rule>
+
+<!-- # ACTIVE DIRECTORY DHCP -->
+
+<!-- Configure:
+Add eventchannel Microsoft-Windows-Dhcp-Server/Operational
+-->
+
+  <rule id="18274" level="5">
+    <if_sid>18101</if_sid>
+    <id>^76$</id>
+    <match>DHCP-Server</match>
+    <description>DHCP: scope updated</description>
+    <info>DHCP</info>
+  </rule>
+
+  <rule id="18275" level="3">
+    <if_sid>18101</if_sid>
+    <id>^106$|^107$</id>
+    <match>DHCP-Server</match>
+    <description>DHCP: reservation updated</description>
+    <info>DHCP</info>
+  </rule>
+
+  <rule id="18276" level="3">
+    <if_sid>18101</if_sid>
+    <id>^119$|^120$</id>
+    <match>DHCP-Server</match>
+    <description>DHCP: exclusion updated</description>
+    <info>DHCP</info>
+  </rule>
+
+  <rule id="18277" level="3">
+    <if_sid>18101</if_sid>
+    <id>^123$</id>
+    <match>DHCP-Server</match>
+    <description>DHCP: device added to the Allow List</description>
+    <info>DHCP</info>
+  </rule>
+
+  <rule id="18278" level="3">
+    <if_sid>18101</if_sid>
+    <id>^124$</id>
+    <match>DHCP-Server</match>
+    <description>DHCP: device removed from the Allow List</description>
+    <info>DHCP</info>
+  </rule>
+
+  <rule id="18279" level="3">
+    <if_sid>18101</if_sid>
+    <id>^127$</id>
+    <match>DHCP-Server</match>
+    <description>DHCP: device added to the Deny List</description>
+    <info>DHCP</info>
+  </rule>
+
+  <rule id="18280" level="3">
+    <if_sid>18101</if_sid>
+    <id>^128$</id>
+    <match>DHCP-Server</match>
+    <description>DHCP: device removed from the Deny List</description>
+    <info>DHCP</info>
+  </rule>
+
+  <rule id="18281" level="5">
+    <if_sid>18101</if_sid>
+    <id>^20096$|^20097$|^20100$</id>
+    <match>DHCP-Server</match>
+    <description>DHCP: denied</description>
+    <info>DHCP</info>
+  </rule>
+
+<!-- # EXCHANGE -->
+
+<!-- Configure:
+Add eventchannel MSExchange Management
+-->
+
+  <rule id="18282" level="12">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet New-TransportRule</match>
+    <description>Exchange: New-TransportRule</description>
+  </rule>
+
+  <rule id="18283" level="12">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet Set-TransportRule</match>
+    <description>Exchange: Set-TransportRule</description>
+  </rule>
+
+  <rule id="18284" level="12">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet Remove-TransportRule</match>
+    <description>Exchange: Remove-TransportRule</description>
+  </rule>
+
+  <rule id="18285" level="4">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet Enable-Mailbox</match>
+    <description>Exchange: Enable-Mailbox</description>
+  </rule>
+
+  <rule id="18286" level="4">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet Remove-Mailbox</match>
+    <description>Exchange: Remove-Mailbox</description>
+  </rule>
+
+  <rule id="18287" level="5">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet Add-MailboxPermission</match>
+    <description>Exchange: Add-MailboxPermission</description>
+  </rule>
+
+  <rule id="18288" level="5">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet Remove-MailboxPermission</match>
+    <description>Exchange: Remove-MailboxPermission</description>
+  </rule>
+
+  <rule id="18289" level="5">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet Add-MailboxFolderPermission</match>
+    <description>Exchange: Add-MailboxFolderPermission</description>
+  </rule>
+
+  <rule id="18290" level="5">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet Remove-MailboxFolderPermission</match>
+    <description>Exchange: Remove-MailboxFolderPermission</description>
+  </rule>
+
+  <rule id="18291" level="12">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet Update-RoleGroupMember</match>
+    <description>Exchange: Update-RoleGroupMember</description>
+  </rule>
+
+  <rule id="18292" level="12">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet New-RoleGroup</match>
+    <description>Exchange: New-RoleGroup</description>
+  </rule>
+
+  <rule id="18293" level="12">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet Remove-RoleGroup</match>
+    <description>Exchange: Remove-RoleGroup</description>
+  </rule>
+
+  <rule id="18294" level="3">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Cmdlet suceeded</match>
+    <description>Exchange: information</description>
+  </rule>
+
+<!-- # MSSQL -->
+
+<!-- Configure: 
+https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/write-sql-server-audit-events-to-the-security-log
+https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/create-a-server-audit-and-database-audit-specification
+https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions
+
+Basic audit specification:
+
+AUDIT_CHANGE_GROUP
+DATABASE_CHANGE_GROUP
+DATABASE_OWNERSHIP_CHANGE_GROUP
+DATABASE_PERMISSION_CHANGE_GROUP
+DATABASE_PRINCIPAL_CHANGE_GROUP
+DATABASE_ROLE_MEMBER_CHANGE_GROUP
+FAILED_LOGIN_GROUP
+LOGIN_CHANGE_PASSWORD_GROUP
+SERVER_PERMISSION_CHANGE_GROUP
+SERVER_PRINCIPAL_CHANGE_GROUP
+SERVER_ROLE_MEMBER_CHANGE_GROUP
+-->
+
+  <rule id="18295" level="7">
+    <if_sid>18101</if_sid>
+    <id>^17126$</id>
+    <description>MSSQL: server started</description>
+  </rule>
+
+  <rule id="18296" level="7">
+    <if_sid>18101</if_sid>
+    <id>^17142$|17148$</id>
+    <description>MSSQL: server stopped</description>
+  </rule>
+
+  <rule id="18297" level="7">
+    <if_sid>18105</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: login failed</description>
+    <match>Login failed for user</match>
+  </rule>
+
+  <rule id="18298" level="7">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: login created</description>
+    <match>CREATE LOGIN</match>
+  </rule>
+
+  <rule id="18299" level="10">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: sa enabled!</description>
+    <match>ALTER LOGIN [sa] ENABLE</match>
+  </rule>
+
+  <rule id="18300" level="7">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: login changed</description>
+    <match>ALTER SERVER ROLE|ALTER LOGIN|CREATE USER|ALTER ROLE|DROP USER</match>
+  </rule>
+
+  <rule id="18301" level="7">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: login deleted</description>
+    <match>DROP LOGIN</match>
+  </rule>
+
+  <rule id="18302" level="7">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: create database</description>
+    <match>CREATE DATABASE</match>
+  </rule>
+
+  <rule id="18303" level="3">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: alter database</description>
+    <match>ALTER DATABASE</match>
+  </rule>
+
+  <rule id="18304" level="7">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: drop database</description>
+    <match>DROP DATABASE</match>
+  </rule>
+
+<!-- Customize -->
+  <rule id="18305" level="9">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: unscheduled database backup created</description>
+    <match>BACKUP DATABASE</match>
+    <time>1 am - 11 pm</time>
+  </rule>
+
+  <rule id="18306" level="7">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: database backup restored</description>
+    <match>RESTORE DATABASE</match>
+  </rule>
+
+  <rule id="18307" level="10">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: audit specification disabled!</description>
+    <match>ALTER SERVER AUDIT SPECIFICATION</match>
+  </rule>
+
+  <rule id="18308" level="10">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: audit disabled!</description>
+    <match>ALTER SERVER AUDIT</match>
+  </rule>
+
+  <rule id="18309" level="7">
+    <if_sid>18104</if_sid>
+    <id>^33205$</id>
+    <description>MSSQL: audit enabled</description>
+    <match>event enabled</match>
+  </rule>
+
+<!-- # NETWORK POLICY SERVER -->
+
+  <rule id="18310" level="3">
+    <if_sid>18104</if_sid>
+    <id>^6272$</id>
+    <description>Network Policy Server granted access to a user</description>
+  </rule>
+
+  <rule id="18311" level="5">
+    <if_sid>18105</if_sid>
+    <id>^6273$</id>
+    <description>Network Policy Server denied access to a user</description>
+  </rule>
+
+<!-- # SYSMON -->
+
+<!-- Configure:
+https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
+
+Add eventchannel Microsoft-Windows-Sysmon/Operational
+-->
+
+  <rule id="18312" level="3">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>CommandLine: "C:\Windows\system32\cmd.exe"</match>
+    <description>Process: CMD has been launched</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+  <rule id="18313" level="3">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>CommandLine: "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"</match>
+    <description>Process: PowerShell has been launched</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+  <rule id="18314" level="2">
+    <if_sid>18101</if_sid>
+    <id>^1$</id>
+    <match>Sysmon</match>
+    <description>Sysmon: process created</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+<!-- Customize -->
+  <rule id="18315" level="0">
+    <if_sid>18101</if_sid>
+    <id>^3$</id>
+    <match>your-process</match>
+    <description>Ignore</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+  <rule id="18316" level="5">
+    <if_sid>18101</if_sid>
+    <id>^3$</id>
+    <match>Sysmon</match>
+    <description>Sysmon: network connection</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18317" level="0">
+    <if_sid>18101</if_sid>
+    <id>^5$</id>
+    <match>software_reporter_tool.exe</match>
+    <description>Ignore Google Chrome</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+  <rule id="18318" level="2">
+    <if_sid>18101</if_sid>
+    <id>^5$</id>
+    <match>Sysmon</match>
+    <description>Sysmon: process terminated</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+  <rule id="18319" level="4">
+    <if_sid>18101</if_sid>
+    <id>^6$</id>
+    <match>Sysmon</match>
+    <description>Sysmon: driver</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18320" level="0">
+    <if_sid>18101</if_sid>
+    <id>^11$</id>
+    <match>EXE_Rules.xml|software_reporter_tool.exe</match>
+    <description>Ignore Office and Google Chrome</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+  <rule id="18321" level="5">
+    <if_sid>18101</if_sid>
+    <id>^11$|^15$</id>
+    <match>Sysmon</match>
+    <description>Sysmon: file created</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+<!-- Exception -->
+  <rule id="18322" level="0">
+    <if_sid>18101</if_sid>
+    <id>^12$|13$|14$</id>
+    <match>C:\Program Files\Windows Sidebar\sidebar.exe|C:\Windows\System32\StikyNot.exe</match>
+    <description>Ignore</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+
+  <rule id="18323" level="5">
+    <if_sid>18101</if_sid>
+    <id>^12$|13$|14$</id>
+    <match>Sysmon</match>
+    <description>Sysmon: registry modified</description>
+    <info>Microsoft Sysmon</info>
+  </rule>
+  
+  <rule id="18324" level="4" frequency="$MS_FREQ" timeframe="300">
+    <if_matched_group>win_authentication_failed</if_matched_group>
+    <description>Multiple Windows logon failures</description>
+    <group>authentication_failures,</group>
+  </rule>
+</group>
+ 
+<!-- EOF -->
