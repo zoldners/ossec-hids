@@ -661,7 +661,7 @@
   <rule id="18178" level="9">
     <if_sid>18104</if_sid>
     <id>^4724$</id>
-    <description>Users: An attempt was made to reset an account's password</description>
+    <description>Users: an attempt was made to reset an account's password</description>
     <group>account_changed,</group>
   </rule>
 
