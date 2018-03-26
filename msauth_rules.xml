@@ -202,7 +202,7 @@
     <info>Related: Groups: member was removed from a security-enabled local group</info>
   </rule>
 
-  <rule id="18122" level=12">
+  <rule id="18122" level="12">
     <if_sid>18108,18109</if_sid>
     <match>DnsAdmins</match>
     <description>DNS Administrators group changed</description>
