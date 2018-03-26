@@ -66,7 +66,7 @@
     <description>Windows audit failure event</description>
   </rule>
 
-<!-- # GROUPS -->
+<!-- # 1.GROUPS -->
 
   <rule id="18106" level="5">
     <if_sid>18104</if_sid>
@@ -75,7 +75,7 @@
     <group>group_changed,win_group_changed,</group>
   </rule>
 
-<!-- # LOCAL GROUPS -->
+<!-- # 2.LOCAL GROUPS -->
 
   <rule id="18107" level="5">
     <if_sid>18104</if_sid>
@@ -382,7 +382,7 @@
     <info>Related: Groups: member was removed from a security-enabled local group</info>
   </rule>
 
-<!-- # GLOBAL GROUPS -->
+<!-- # 3.GLOBAL GROUPS -->
 
   <rule id="18142" level="5">
     <if_sid>18104</if_sid>
@@ -491,7 +491,7 @@
     <info>Related: Groups: member was removed from a security-enabled global group</info>
   </rule>
 
-<!-- # UNIVERSAL GROUPS -->
+<!-- # 4.UNIVERSAL GROUPS -->
   
   <rule id="18155" level="5">
     <if_sid>18104</if_sid>
@@ -528,7 +528,7 @@
     <group>group_deleted,win_group_deleted,</group>
   </rule>
 
-<!-- # DISTRIBUTION GROUPS -->
+<!-- # 5.DISTRIBUTION GROUPS -->
 
   <rule id="18160" level="5">
     <if_sid>18104</if_sid>
@@ -635,7 +635,7 @@
     <group>group_deleted,win_group_deleted,</group>
   </rule>
 
-<!-- # USERS -->
+<!-- # 6.USERS -->
 
   <rule id="18175" level="7">
     <if_sid>18104</if_sid>
@@ -732,7 +732,7 @@ Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advan
     <description>Users: right was removed</description>
   </rule>
 
-<!-- # USER LOGINS -->
+<!-- # 7.USER LOGINS -->
 
 <!-- Customize -->
   <rule id="18188" level="5">
@@ -972,7 +972,7 @@ Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advan
     <group>win_authentication_failed,</group>
   </rule>
 
-<!-- # COMPUTERS -->
+<!-- # 8.COMPUTERS -->
 
   <rule id="18216" level="3">
     <if_sid>18104</if_sid>
@@ -1140,7 +1140,7 @@ Add eventchannel Microsoft-Windows-DriverFrameworks-UserMode/Operational
     <description>USB device connected</description>
   </rule>
 
-<!-- # WINDOWS FIREWALL -->
+<!-- # 9.WINDOWS FIREWALL -->
 
 <!-- Configure:
 Add eventchannel Microsoft-Windows-Windows Firewall With Advanced Security/Firewall
@@ -1233,7 +1233,7 @@ Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advan
     <description>The Windows Firewall service was stopped</description>
   </rule>
 
-<!-- # SRP/APPLOCKER -->
+<!-- # 10.SRP/APPLOCKER -->
 
 <!-- Exception -->
   <rule id="18250" level="0">
@@ -1263,7 +1263,7 @@ Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advan
     <description>Restricted: AppLocker</description>
   </rule>
 
-<!-- # PROCESSES -->
+<!-- # 11.PROCESSES -->
 
 <!-- Configure:
 Active Directory - Group Policy: 
@@ -1383,7 +1383,7 @@ Computer Configuration \ Policies \ Windows Settings \ Security Settings \ Advan
     <description>Process terminated</description>
   </rule>
 
-<!-- # ACTIVE DIRECTORY MODIFICATIONS -->
+<!-- # 12.ACTIVE DIRECTORY MODIFICATIONS -->
 
 <!-- Configure:
 https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-directory-service-changes
@@ -1416,7 +1416,7 @@ https://blogs.technet.microsoft.com/askpfeplat/2013/10/12/who-moved-the-dns-chee
     <description>AD: directory service object was deleted</description>
   </rule>
 
-<!-- # ACTIVE DIRECTORY CERTIFICATE SERVICES -->
+<!-- # 13.ACTIVE DIRECTORY CERTIFICATE SERVICES -->
 
 <!-- Configure:
 Active Directory - Group Policy: 
@@ -1473,7 +1473,7 @@ Certificate Authority \ Properties: Auditing
     <description>CA: one or more rows have been deleted from the certificate database</description>
   </rule>
 
-<!-- # ACTIVE DIRECTORY DHCP -->
+<!-- # 14.ACTIVE DIRECTORY DHCP -->
 
 <!-- Configure:
 Add eventchannel Microsoft-Windows-Dhcp-Server/Operational
@@ -1543,7 +1543,7 @@ Add eventchannel Microsoft-Windows-Dhcp-Server/Operational
     <info>DHCP</info>
   </rule>
 
-<!-- # EXCHANGE -->
+<!-- # 15.EXCHANGE -->
 
 <!-- Configure:
 Add eventchannel MSExchange Management
@@ -1640,7 +1640,7 @@ Add eventchannel MSExchange Management
     <description>Exchange: information</description>
   </rule>
 
-<!-- # MSSQL -->
+<!-- # 16.SQL SERVER -->
 
 <!-- Configure: 
 https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/write-sql-server-audit-events-to-the-security-log
@@ -1767,7 +1767,7 @@ SERVER_ROLE_MEMBER_CHANGE_GROUP
     <match>event enabled</match>
   </rule>
 
-<!-- # NETWORK POLICY SERVER -->
+<!-- # 17.NETWORK POLICY SERVER -->
 
   <rule id="18318" level="3">
     <if_sid>18104</if_sid>
@@ -1781,7 +1781,7 @@ SERVER_ROLE_MEMBER_CHANGE_GROUP
     <description>Network Policy Server denied access to a user</description>
   </rule>
 
-<!-- # SYSMON -->
+<!-- # 18.SYSMON -->
 
 <!-- Configure:
 https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
