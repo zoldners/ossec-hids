@@ -1,4 +1,7 @@
 #!/usr/bin/perl
+#
+# Perl script: specifies the ID of the rule (OSSEC Windows rules)
+#
 use strict;
 use warnings;
 
