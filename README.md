@@ -1,7 +1,7 @@
 ## OSSEC Windows rules
 
 
-Tags:
+##### Tags:
 
 Configure - configure auditing
 
@@ -11,7 +11,7 @@ Exception - ignore events
 
 
 
-Groups:
+##### Groups:
 
 1. GROUPS
 2. LOCAL GROUPS
